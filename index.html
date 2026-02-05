@@ -1,11 +1,1342 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>one-coach</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1分ゴルフコーチ</title>
+    <meta name="description" content="悩みを1分で解決！シニア向けゴルフアドバイスツール">
+    <meta name="theme-color" content="#2E7D32">
+    <style>
+        /* --- Base & Reset --- */
+        :root {
+            --primary-color: #2E7D32; /* Golf Green */
+            --accent-color: #FF8F00; /* Warm Orange */
+            --text-color: #333333;
+            --bg-color: #F9F9F9;
+            --card-bg: #FFFFFF;
+            --border-color: #DDDDDD;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --font-main: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+            --step-inactive: #E0E0E0;
+            
+            /* Font Sizes (Default Medium) */
+            --fs-base: 18px;
+            --fs-h1: 20px;
+            --fs-h2: 22px;
+            --fs-btn: 20px;
+        }
+
+        /* Font Size Variants */
+        [data-fontsize="large"] {
+            --fs-base: 22px;
+            --fs-h1: 24px;
+            --fs-h2: 26px;
+            --fs-btn: 24px;
+        }
+        [data-fontsize="extra"] {
+            --fs-base: 26px;
+            --fs-h1: 26px; /* Header constrains */
+            --fs-h2: 30px;
+            --fs-btn: 28px;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary-color: #66BB6A;
+            --accent-color: #FFA726;
+            --text-color: #EEEEEE;
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --border-color: #444444;
+            --step-inactive: #444444;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: var(--fs-base);
+            transition: background-color 0.3s, color 0.3s, font-size 0.2s;
+        }
+
+        /* --- Layout Container --- */
+        #app {
+            max-width: 420px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+            padding-bottom: 100px; /* Space for footer/fab */
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--card-bg);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: var(--fs-h1);
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer; /* クリック可能に見せる */
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none; /* Remove border for cleaner look */
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            padding: 0;
+        }
+        
+        /* --- Progress Bar --- */
+        .progress-container {
+            padding: 10px 16px;
+            background: var(--card-bg);
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--step-inactive);
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            background: var(--step-inactive);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+        }
+        .step-indicator.active {
+            background: var(--primary-color);
+        }
+        .step-indicator.completed {
+            background: var(--primary-color);
+        }
+
+        /* --- Main Content --- */
+        main {
+            padding: 16px;
+        }
+
+        h2 {
+            font-size: var(--fs-h2);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 110px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-card:active {
+            transform: scale(0.98);
+            background-color: var(--step-inactive);
+        }
+
+        .btn-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+
+        .btn-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .btn-label {
+            font-size: var(--fs-base);
+            font-weight: bold;
+            color: var(--text-color);
+            line-height: 1.3;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-label {
+            font-size: var(--fs-base);
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+            color: var(--primary-color);
+        }
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .radio-btn {
+            flex: 1;
+            min-width: 90px;
+        }
+        .radio-input {
+            display: none;
+        }
+        .radio-label {
+            display: block;
+            padding: 14px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .radio-input:checked + .radio-label {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        /* Input Controls */
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .input-group {
+            flex: 1;
+        }
+        .input-group label {
+            display: block;
+            font-size: 14px; /* Label stays small */
+            margin-bottom: 4px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        .simple-input, .simple-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: var(--fs-base);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            appearance: none;
+        }
+        /* Custom arrow for select */
+        .simple-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+        [data-theme="dark"] .simple-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23EEEEEE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+
+        .btn-next {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: var(--fs-btn);
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        /* --- Result --- */
+        .result-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border-top: 6px solid var(--accent-color);
+        }
+
+        .prescription-title {
+            font-size: var(--fs-h2);
+            font-weight: bold;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .cause-section {
+            background-color: rgba(0,0,0,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            font-size: var(--fs-base);
+            font-weight: bold;
+            margin: 16px 0 8px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .todo-list, .routine-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .todo-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .todo-checkbox {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            margin-top: 4px;
+            flex-shrink: 0;
+            accent-color: var(--primary-color);
+        }
+        
+        .ng-box {
+            background-color: #FFEBEE;
+            border-left: 5px solid #F44336;
+            padding: 12px;
+            border-radius: 4px;
+            color: #B71C1C;
+            font-weight: bold;
+        }
+        [data-theme="dark"] .ng-box {
+            background-color: #3E2723;
+            color: #FFCDD2;
+        }
+
+        .routine-item {
+            margin-bottom: 10px;
+            font-size: var(--fs-base);
+        }
+        .routine-number {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        .memo-area {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: var(--fs-base);
+            font-family: inherit;
+            margin-top: 10px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            resize: vertical;
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--text-color); /* Neutral for save */
+            color: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            font-size: var(--fs-base);
+            font-weight: bold;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+        
+        .btn-line {
+            width: 100%;
+            padding: 14px;
+            background-color: #06C755; /* LINE Green */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: var(--fs-base);
+            font-weight: bold;
+            margin-top: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* --- Footer & FAB --- */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-bottom: 40px;
+        }
+        
+        .btn-link {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            text-decoration: underline;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .fab-emergency {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #D32F2F;
+            color: white;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 150;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+        .fab-label {
+            position: absolute;
+            bottom: -20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #D32F2F;
+            background: rgba(255,255,255,0.9);
+            padding: 2px 4px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.open {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            max-height: 85vh;
+            border-radius: 12px;
+            padding: 24px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 32px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0 10px;
+            line-height: 1;
+        }
+        
+        .modal-header {
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        /* Settings Styles */
+        .settings-section {
+            margin-bottom: 24px;
+        }
+        .settings-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .size-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .size-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .size-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .theme-switch-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        .settings-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+        .settings-note {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Help Styles */
+        .help-list {
+            list-style: none;
+            padding: 0;
+        }
+        .help-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .help-icon {
+            font-size: 28px;
+            margin-right: 12px;
+            min-width: 40px;
+            text-align: center;
+        }
+        .help-text h4 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+        .help-text p {
+            margin: 0;
+            font-size: 15px;
+            color: var(--text-color);
+        }
+
+        /* History & Emergency shared styles */
+        .history-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            cursor: pointer;
+        }
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .history-place {
+            font-weight: bold;
+            color: var(--accent-color);
+            background: rgba(255, 143, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .history-title {
+            font-weight: bold;
+            font-size: var(--fs-base);
+            line-height: 1.4;
+        }
+        
+        .emergency-list {
+            list-style: none;
+            padding: 0;
+        }
+        .emergency-list li {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+        .emergency-list li:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        /* Utils */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
 </head>
 <body>
-<h1>one-coach</h1>
-<p>最初のテストページです。</p>
+
+<div id="app">
+    <!-- Header -->
+    <header>
+        <h1 onclick="app.reset()" title="トップへ戻る">1分ゴルフコーチ</h1>
+        <div class="header-controls">
+            <button class="icon-btn" onclick="app.showModal('helpModal')" aria-label="使い方">❓</button>
+            <button class="icon-btn" onclick="app.showModal('settingsModal')" aria-label="設定">⚙️</button>
+        </div>
+    </header>
+
+    <!-- Progress -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="step-indicator active" id="step1-ind">1</div>
+            <div class="step-indicator" id="step2-ind">2</div>
+            <div class="step-indicator" id="step3-ind">3</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Step 1: 悩み選択 -->
+        <div id="step1" class="step-content fade-in">
+            <h2>今の悩みは？</h2>
+            <div class="card-grid" id="problemGrid">
+                <!-- JSで生成 -->
+            </div>
+        </div>
+
+        <!-- Step 2: 状況選択 -->
+        <div id="step2" class="step-content hidden fade-in">
+            <h2>状況を教えてください</h2>
+            
+            <div class="form-group">
+                <span class="form-label">使用クラブ</span>
+                <div class="radio-group">
+                    <div class="radio-btn">
+                        <input type="radio" name="club" id="club-driver" value="driver" class="radio-input" checked>
+                        <label for="club-driver" class="radio-label">1W</label>
+                    </div>
+                    <div class="radio-btn">
+                        <input type="radio" name="club" id="club-wood" value="wood" class="radio-input">
+                        <label for="club-wood" class="radio-label">FW/UT</label>
+                    </div>
+                    <div class="radio-btn">
+                        <input type="radio" name="club" id="club-iron" value="iron" class="radio-input">
+                        <label for="club-iron" class="radio-label">アイアン</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="form-label">現在の場所</span>
+                <div class="radio-group">
+                    <div class="radio-btn">
+                        <input type="radio" name="scene" id="scene-range" value="range" class="radio-input" checked>
+                        <label for="scene-range" class="radio-label">練習場</label>
+                    </div>
+                    <div class="radio-btn">
+                        <input type="radio" name="scene" id="scene-course" value="course" class="radio-input">
+                        <label for="scene-course" class="radio-label">ラウンド</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="form-label">いつもの球筋</span>
+                <div class="radio-group">
+                    <div class="radio-btn">
+                        <input type="radio" name="trend" id="trend-slice" value="slice" class="radio-input" checked>
+                        <label for="trend-slice" class="radio-label">右系</label>
+                    </div>
+                    <div class="radio-btn">
+                        <input type="radio" name="trend" id="trend-hook" value="hook" class="radio-input">
+                        <label for="trend-hook" class="radio-label">左系</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-next" onclick="app.goToStep(3)">診断する</button>
+            <button class="btn-link" style="width:100%; margin-top:10px;" onclick="app.goToStep(1)">戻る</button>
+        </div>
+
+        <!-- Step 3: 結果 -->
+        <div id="step3" class="step-content hidden fade-in">
+            <h2>コーチからの処方箋</h2>
+            
+            <div id="resultContainer">
+                <!-- JSで注入 -->
+            </div>
+
+            <div class="result-card">
+                <span class="section-header">上達記録（履歴に残す）</span>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="recordDate">いつ</label>
+                        <input type="date" id="recordDate" class="simple-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="recordPlaceSelect">どこで</label>
+                        <select id="recordPlaceSelect" class="simple-select">
+                            <option value="練習場">練習場</option>
+                            <option value="コース">コース</option>
+                            <option value="自宅">自宅</option>
+                            <option value="レッスン">レッスン</option>
+                            <option value="other">その他 (手入力)</option>
+                        </select>
+                        <input type="text" id="recordPlaceInput" class="simple-input hidden" placeholder="場所を入力" style="margin-top:6px;">
+                    </div>
+                </div>
+
+                <label for="userMemo" style="display:block; font-size:14px; font-weight:bold; margin-bottom:4px; color:var(--text-color);">気付き・メモ</label>
+                <textarea class="memo-area" id="userMemo" rows="3" placeholder="打った感触やスコアなど..."></textarea>
+                
+                <button class="btn-save" onclick="app.saveResult()">📖 履歴に保存する</button>
+                <button class="btn-line" onclick="app.shareLine()">💬 LINEで送る</button>
+            </div>
+
+            <button class="btn-next" style="background-color: var(--step-inactive); color: var(--text-color);" onclick="app.reset()">最初からやり直す</button>
+        </div>
+    </main>
+
+    <footer>
+        <button class="btn-link" onclick="app.toggleHistory()">📜 過去の履歴を見る</button>
+    </footer>
+
+    <!-- Emergency FAB -->
+    <div class="fab-emergency" onclick="app.showModal('emergencyModal')">
+        🆘
+        <span class="fab-label">お助け</span>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="app.closeModal('historyModal')">×</button>
+            <div class="modal-header">保存した履歴</div>
+            <div id="historyList">
+                <p style="text-align:center; color:#888;">履歴はありません</p>
+            </div>
+            <button class="btn-link" onclick="app.clearHistory()" style="color:#d32f2f; width:100%; margin-top:20px;">履歴を全消去</button>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div id="emergencyModal" class="modal">
+        <div class="modal-content" style="background-color: #FFF3E0;">
+            <button class="close-modal" onclick="app.closeModal('emergencyModal')">×</button>
+            <h2 style="color:#D84315; border-bottom:none;">緊急！ワンポイント</h2>
+            <p>今の状況に近いものを選んでください。</p>
+            <ul class="emergency-list">
+                <li onclick="alert('【深呼吸】\n\n1. 空を見上げて鼻から大きく吸う\n2. 口からゆっくり吐く\n\nまずは落ち着きましょう。')">💓 ドキドキが止まらない</li>
+                <li onclick="alert('【グリップをゆるめる】\n\n1. クラブを短く持つ\n2. 生卵を持つくらい優しく握る\n3. 半分の力で振る')">🏌️‍♂️ チョロ・ダフリが連発</li>
+                <li onclick="alert('【リズムだけ考える】\n\n「チャー・シュー・メン」\nまたは\n「イチ・ニ・サーン」\n\nリズムよく振ることだけに集中！')">😫 どう振ればいいか忘れた</li>
+                <li onclick="alert('【ターゲットを大きく】\n\nピンではなく「グリーンセンター」や「広い場所」を狙う。\n\n安全第一でいきましょう。')">🌳 トラブルショット</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="app.closeModal('settingsModal')">×</button>
+            <div class="modal-header">設定</div>
+            
+            <div class="settings-section">
+                <span class="settings-label">文字の大きさ</span>
+                <div class="size-btns">
+                    <button class="size-btn" data-setsize="medium" onclick="app.setFontSize('medium')">標準</button>
+                    <button class="size-btn" data-setsize="large" onclick="app.setFontSize('large')">大</button>
+                    <button class="size-btn" data-setsize="extra" onclick="app.setFontSize('extra')">特大</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="theme-switch-row">
+                    <span class="settings-label" style="margin:0;">ダークモード（夜用）</span>
+                    <input type="checkbox" id="themeSwitch" onchange="app.toggleTheme(this.checked)" style="transform:scale(1.5);">
+                </div>
+            </div>
+
+            <div class="settings-section" style="border-top:1px solid var(--border-color); padding-top:16px;">
+                <span class="settings-label">ユーザー情報（連携用）</span>
+                <input type="text" id="settingNick" class="settings-input" placeholder="お名前（LINE署名用）">
+                <input type="email" id="settingEmail" class="settings-input" placeholder="メールアドレス（控え用）">
+                <p class="settings-note">※入力内容は端末内に保存され、共有時の署名などに使用されます。外部には送信されません。</p>
+                <button class="btn-save" onclick="app.saveSettings()">設定を保存する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="app.closeModal('helpModal')">×</button>
+            <div class="modal-header">このアプリの使い方</div>
+            
+            <ul class="help-list">
+                <li class="help-item">
+                    <div class="help-icon">🎯</div>
+                    <div class="help-text">
+                        <h4>目的</h4>
+                        <p>あなたのゴルフの悩みを1分で診断し、今すぐやるべき解決策をアドバイスします。</p>
+                    </div>
+                </li>
+                <li class="help-item">
+                    <div class="help-icon">1️⃣</div>
+                    <div class="help-text">
+                        <h4>悩みを選ぶ</h4>
+                        <p>「スライス」「ダフリ」など、今一番困っている症状を選んでください。</p>
+                    </div>
+                </li>
+                <li class="help-item">
+                    <div class="help-icon">2️⃣</div>
+                    <div class="help-text">
+                        <h4>状況を選ぶ</h4>
+                        <p>「使用クラブ」や「場所（練習場/コース）」を選ぶと、状況に合った助言になります。</p>
+                    </div>
+                </li>
+                <li class="help-item">
+                    <div class="help-icon">3️⃣</div>
+                    <div class="help-text">
+                        <h4>処方箋を見る</h4>
+                        <p>やるべき3つのポイントが表示されます。LINEで送ったり、履歴に残すこともできます。</p>
+                    </div>
+                </li>
+            </ul>
+            <button class="btn-next" onclick="app.closeModal('helpModal')">閉じる</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    /* --- Data Definition --- */
+    const PROBLEMS = [
+        { id: 'slice', label: '右プッシュ\nスライス', icon: '🍌' },
+        { id: 'hook', label: '左引っかけ\nチーピン', icon: '🦆' },
+        { id: 'top', label: 'トップ\nチョロ', icon: '⬆️' },
+        { id: 'duff', label: 'ダフリ\n飛ばない', icon: '⛏️' },
+        { id: 'contact', label: '芯に\n当たらない', icon: '💥' },
+        { id: 'distance', label: '飛距離が\n落ちた', icon: '📉' },
+        { id: 'start', label: '朝イチの\n不安', icon: '🥶' },
+        { id: 'collapse', label: '後半\n崩れる', icon: '🏚️' }
+    ];
+
+    const ADVICE_DB = {
+        'slice': {
+            title: '背中をターゲットに向け続ける',
+            cause: '体が早く開き、クラブが遅れて入っています。',
+            todos: [
+                '右足を半歩後ろに引いて構える',
+                'インパクトまで胸を右に向ける意識',
+                'フィニッシュまで一気に振り切る'
+            ],
+            ng: 'ボールを当てにいく（手打ちになる）',
+            routine: ['素振りで風切り音を「左耳」で聞く', '深呼吸を一回', '目標の「左端」を見て打つ']
+        },
+        'hook': {
+            title: '体の回転を止めずに振り抜く',
+            cause: '手が返りすぎたり、回転が止まって手だけ動いています。',
+            todos: [
+                'グリップを少しウィーク（左回し）に',
+                'ボールの位置をボール半個「右」へ',
+                'おヘソを目標に向けるまで回し切る'
+            ],
+            ng: '右肩を下げてすくい上げる',
+            routine: ['グリップ圧を5割に緩める', 'フォローの形をイメージ', 'リズムだけ考えて振る']
+        },
+        'top': {
+            title: '「膝の高さ」をキープする',
+            cause: 'インパクト前に上体が起き上がっています。',
+            todos: [
+                'アドレスで膝を軽く曲げ直す',
+                'ボールではなく「ボールの赤道」を見る',
+                'インパクト後も芝を見る意識'
+            ],
+            ng: 'ボールを上げようとする',
+            routine: ['目線を低く保つ', '足裏の重心を感じる', '7割の力でコンパクトに']
+        },
+        'duff': {
+            title: '左足体重でインパクト',
+            cause: '右足に体重が残り、手前を叩いています。',
+            todos: [
+                '最初から「左足6：右足4」で構える',
+                'ボールを「直接」クリーンに打つ意識',
+                '右踵を早めに地面から浮かせる'
+            ],
+            ng: 'ボールを長く見すぎる',
+            routine: ['左足を踏み込む素振り', 'ボールの左側を見る', 'フィニッシュで3秒止まる']
+        },
+        'contact': {
+            title: '大振り禁止、ハーフスイング',
+            cause: 'スイング軸が左右上下にブレています。',
+            todos: [
+                'スタンス幅を靴一足分狭くする',
+                '「9時〜3時」の振り幅で打つ',
+                'グリップを短く持つ'
+            ],
+            ng: 'フルスイングで飛ばそうとする',
+            routine: ['連続素振りで軸を感じる', '力を抜いて脱力', '真芯に当てる音だけ想像']
+        },
+        'distance': {
+            title: '体全体を使ったねじれ戻し',
+            cause: '手先だけで振っており、体幹が使えていません。',
+            todos: [
+                'バックスイングで左肩を顎の下に入れる',
+                '切り返しで「下半身」から始動する',
+                'フィニッシュを大きく取る'
+            ],
+            ng: '腕力だけで強く叩く',
+            routine: ['深い捻転を確認する素振り', '足の指で地面を掴む', 'ゆったり大きなリズム']
+        },
+        'start': {
+            title: '6割の力でフェアウェイ真ん中へ',
+            cause: '緊張で体が硬くなり、リズムが早くなっています。',
+            todos: [
+                'ゆっくり息を吐いてから構える',
+                '「当てるだけ」のつもりで振る',
+                '一番得意なクラブを持つ'
+            ],
+            ng: '「飛ばそう」「乗せよう」と欲張る',
+            routine: ['空を見上げて深呼吸', 'ターゲットをぼんやり見る', '「イチ、ニ、サーン」と唱える']
+        },
+        'collapse': {
+            title: '下半身の土台を作り直す',
+            cause: '疲労で下半身が止まり、手打ちになっています。',
+            todos: [
+                'アドレスで足腰の踏ん張りを再確認',
+                '水分補給と深呼吸',
+                '素振りを2回して体のキレを戻す'
+            ],
+            ng: '修正しようといろいろ考えすぎる',
+            routine: ['股関節を軽くストレッチ', 'リズムを一定にする', '「フィニッシュ」だけ意識']
+        }
+    };
+
+    /* --- App Logic --- */
+    const app = {
+        state: {
+            step: 1,
+            problem: null,
+            club: 'driver',
+            scene: 'range',
+            trend: 'slice',
+            history: [],
+            fontSize: 'medium', // medium, large, extra
+            theme: 'light',
+            userNick: '',
+            userEmail: ''
+        },
+
+        init: function() {
+            // Load theme
+            const savedTheme = localStorage.getItem('golfCoachTheme') || 'light';
+            this.toggleTheme(savedTheme === 'dark');
+
+            // Load font size
+            const savedFont = localStorage.getItem('golfCoachFontSize') || 'medium';
+            this.setFontSize(savedFont);
+
+            // Load User Info
+            this.state.userNick = localStorage.getItem('golfCoachNick') || '';
+            this.state.userEmail = localStorage.getItem('golfCoachEmail') || '';
+            document.getElementById('settingNick').value = this.state.userNick;
+            document.getElementById('settingEmail').value = this.state.userEmail;
+
+            // Load history
+            const savedHistory = localStorage.getItem('golfCoachHistory');
+            if (savedHistory) {
+                this.state.history = JSON.parse(savedHistory);
+            }
+
+            // Render Step 1
+            this.renderStep1();
+            
+            // Input changes listeners
+            document.querySelectorAll('input[name="club"]').forEach(el => {
+                el.addEventListener('change', (e) => this.state.club = e.target.value);
+            });
+            document.querySelectorAll('input[name="scene"]').forEach(el => {
+                el.addEventListener('change', (e) => this.state.scene = e.target.value);
+            });
+            document.querySelectorAll('input[name="trend"]').forEach(el => {
+                el.addEventListener('change', (e) => this.state.trend = e.target.value);
+            });
+            
+            // Place select change logic
+            document.getElementById('recordPlaceSelect').addEventListener('change', (e) => {
+                const input = document.getElementById('recordPlaceInput');
+                if (e.target.value === 'other') {
+                    input.classList.remove('hidden');
+                    input.focus();
+                } else {
+                    input.classList.add('hidden');
+                }
+            });
+        },
+
+        /* UI/Modal Control */
+        showModal: function(modalId) {
+            document.getElementById(modalId).classList.add('open');
+        },
+        closeModal: function(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+        },
+
+        /* Settings Logic */
+        toggleTheme: function(isDark) {
+            const theme = isDark ? 'dark' : 'light';
+            this.state.theme = theme;
+            document.body.setAttribute('data-theme', theme);
+            document.getElementById('themeSwitch').checked = isDark;
+            localStorage.setItem('golfCoachTheme', theme);
+        },
+
+        setFontSize: function(size) {
+            this.state.fontSize = size;
+            document.body.setAttribute('data-fontsize', size);
+            localStorage.setItem('golfCoachFontSize', size);
+            
+            // Update active button visual in settings
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.setsize === size);
+            });
+        },
+
+        saveSettings: function() {
+            const nick = document.getElementById('settingNick').value;
+            const email = document.getElementById('settingEmail').value;
+            
+            this.state.userNick = nick;
+            this.state.userEmail = email;
+            
+            localStorage.setItem('golfCoachNick', nick);
+            localStorage.setItem('golfCoachEmail', email);
+            
+            alert('設定を保存しました！');
+            this.closeModal('settingsModal');
+        },
+
+        /* App Steps */
+        renderStep1: function() {
+            const grid = document.getElementById('problemGrid');
+            grid.innerHTML = '';
+            PROBLEMS.forEach(p => {
+                const btn = document.createElement('div');
+                btn.className = 'btn-card';
+                btn.innerHTML = `
+                    <span class="btn-icon">${p.icon}</span>
+                    <span class="btn-label">${p.label.replace(/\n/g, '<br>')}</span>
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.btn-card').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    this.state.problem = p.id;
+                    setTimeout(() => this.goToStep(2), 200);
+                };
+                grid.appendChild(btn);
+            });
+        },
+
+        goToStep: function(stepNum) {
+            // Validation
+            if (stepNum === 2 && !this.state.problem) return;
+            
+            // Update State
+            this.state.step = stepNum;
+
+            // UI Update
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step${stepNum}`).classList.remove('hidden');
+
+            // Progress Bar
+            document.querySelectorAll('.step-indicator').forEach((el, idx) => {
+                el.classList.remove('active', 'completed');
+                if (idx + 1 < stepNum) el.classList.add('completed');
+                if (idx + 1 === stepNum) el.classList.add('active');
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // If Step 3, Generate Result
+            if (stepNum === 3) {
+                this.generateResult();
+            }
+        },
+
+        generateResult: function() {
+            const problemId = this.state.problem;
+            const baseData = ADVICE_DB[problemId];
+            const context = {
+                club: this.state.club,
+                scene: this.state.scene,
+                trend: this.state.trend
+            };
+
+            // Copy base data
+            let advice = JSON.parse(JSON.stringify(baseData));
+
+            // --- Context Logic ---
+            if (context.club === 'driver') {
+                advice.todos.push('ティーアップの高さを確認');
+                if (problemId === 'slice') advice.ng = '思い切り叩きにいく';
+            } else if (context.club === 'iron') {
+                advice.todos.push('ダウンブロー（上から）を意識');
+            }
+
+            if (context.scene === 'course') {
+                advice.title = '【現場対応】' + advice.title;
+                advice.todos = advice.todos.slice(0, 2); 
+                advice.todos.push('ターゲットを安全な広い方向へ');
+                advice.routine[2] = '決めたら迷わず打つ';
+            } else {
+                advice.todos.push('ハーフスイングで形を確認');
+            }
+
+            if (context.trend === 'slice' && problemId === 'distance') {
+                advice.cause += ' スライス回転でロスしています。';
+            }
+
+            // Render HTML
+            const container = document.getElementById('resultContainer');
+            container.innerHTML = `
+                <div class="result-card">
+                    <div class="prescription-title">${advice.title}</div>
+                    
+                    <div class="cause-section">
+                        <strong>今の状態：</strong><br>${advice.cause}
+                    </div>
+
+                    <div class="section-header">今すぐやること3つ</div>
+                    <ul class="todo-list">
+                        ${advice.todos.slice(0,3).map(t => `
+                            <li class="todo-item">
+                                <input type="checkbox" class="todo-checkbox">
+                                <span class="todo-text">${t}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+
+                    <div class="section-header">やってはいけない (NG)</div>
+                    <div class="ng-box">⚠️ ${advice.ng}</div>
+
+                    <div class="section-header">3球ルーティン</div>
+                    <div class="routine-list">
+                        ${advice.routine.map((r, i) => `
+                            <div class="routine-item">
+                                <span class="routine-number">${i+1}</span> ${r}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Reset inputs for recording
+            document.getElementById('userMemo').value = '';
+            document.getElementById('recordPlaceSelect').value = '練習場';
+            document.getElementById('recordPlaceInput').classList.add('hidden');
+            document.getElementById('recordPlaceInput').value = '';
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('recordDate').value = today;
+            
+            this.currentResult = {
+                title: advice.title,
+                problemId: problemId,
+                todos: advice.todos.slice(0,3)
+            };
+        },
+
+        saveResult: function() {
+            const memo = document.getElementById('userMemo').value;
+            const dateVal = document.getElementById('recordDate').value;
+            
+            // Handle Place
+            const selectVal = document.getElementById('recordPlaceSelect').value;
+            let placeVal = selectVal;
+            if (selectVal === 'other') {
+                placeVal = document.getElementById('recordPlaceInput').value || '場所未入力';
+            }
+
+            const historyItem = {
+                ...this.currentResult,
+                memo: memo,
+                recordDate: dateVal,
+                recordPlace: placeVal,
+                timestamp: new Date().getTime()
+            };
+
+            this.state.history.unshift(historyItem);
+            if (this.state.history.length > 20) this.state.history.pop(); // Max 20
+
+            localStorage.setItem('golfCoachHistory', JSON.stringify(this.state.history));
+            alert('履歴に保存しました！');
+        },
+
+        shareLine: function() {
+            const r = this.currentResult;
+            if (!r) return;
+            
+            const memo = document.getElementById('userMemo').value;
+            let text = `【1分ゴルフコーチ】\n処方箋：${r.title}\n\nやるべきこと：\n${r.todos.map(t=>'・'+t).join('\n')}`;
+            if(memo) text += `\n\nメモ：\n${memo}`;
+            
+            // Add user signature if available
+            if(this.state.userNick) {
+                text += `\n\nFrom: ${this.state.userNick}さんの共有`;
+            }
+
+            const url = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        },
+
+        toggleHistory: function() {
+            this.showModal('historyModal');
+            const list = document.getElementById('historyList');
+            
+            if (this.state.history.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888;">履歴はありません</p>';
+            } else {
+                list.innerHTML = this.state.history.map(item => {
+                    let dateDisplay = item.recordDate || new Date(item.timestamp || Date.now()).toLocaleDateString('ja-JP');
+                    let placeDisplay = item.recordPlace ? `<span class="history-place">@${item.recordPlace}</span>` : '';
+                    
+                    return `
+                    <div class="history-item">
+                        <div class="history-meta">
+                            <span>📅 ${dateDisplay}</span>
+                            ${placeDisplay}
+                        </div>
+                        <div class="history-title">${item.title}</div>
+                        ${item.memo ? `<div style="font-size:var(--fs-base); color:#666; margin-top:4px;">📝 ${item.memo}</div>` : ''}
+                    </div>
+                `}).join('');
+            }
+        },
+
+        clearHistory: function() {
+            if(confirm('本当に履歴を全て削除しますか？')) {
+                this.state.history = [];
+                localStorage.removeItem('golfCoachHistory');
+                this.toggleHistory(); // Re-render
+            }
+        },
+        
+        reset: function() {
+            this.state.problem = null;
+            this.goToStep(1);
+        }
+    };
+
+    // Start App
+    document.addEventListener('DOMContentLoaded', () => {
+        app.init();
+    });
+
+</script>
 </body>
 </html>
