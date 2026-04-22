@@ -2,1527 +2,200 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1分ゴルフコーチ</title>
-    <meta name="description" content="悩みを1分で解決！シニア向けゴルフアドバイスツール">
-    <meta name="theme-color" content="#2E7D32">
-    
-    <!-- ファビコン・アプリアイコンの設定 -->
-    <link rel="icon" href="https://spc-jp.github.io/one-coach/favicon.png">
-    <link rel="apple-touch-icon" href="https://spc-jp.github.io/one-coach/favicon.png">
-
-    <!-- OGP (LINEやSNSシェア用) の設定 -->
-    <meta property="og:title" content="1分ゴルフコーチ">
-    <meta property="og:description" content="悩みを1分で解決！シニア向けゴルフアドバイスツール">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://one-coach.pages.dev/">
-    <meta property="og:image" content="https://spc-jp.github.io/one-coach/ogp.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://spc-jp.github.io/one-coach/ogp.png">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ | Smile Plus Consulting</title>
+    <link rel="icon" href="https://spc-jp.github.io/mikke-catalog-contact/favicon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#f59e0b' },
+                    fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- Base & Reset --- */
-        :root {
-            --primary-color: #2E7D32; /* Golf Green */
-            --accent-color: #FF8F00; /* Warm Orange */
-            --text-color: #333333;
-            --bg-color: #F9F9F9;
-            --card-bg: #FFFFFF;
-            --border-color: #DDDDDD;
-            --shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --font-main: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-            --step-inactive: #E0E0E0;
-            
-            /* Font Sizes (Default Medium) */
-            --fs-base: 18px;
-            --fs-h1: 20px;
-            --fs-h2: 22px;
-            --fs-btn: 20px;
+        body { font-family: 'Noto Sans JP', sans-serif; word-break: break-word; }
+        .hero-pattern {
+            background-color: #f0f9ff;
+            background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-
-        /* Font Size Variants */
-        [data-fontsize="large"] {
-            --fs-base: 22px;
-            --fs-h1: 24px;
-            --fs-h2: 26px;
-            --fs-btn: 24px;
-        }
-        [data-fontsize="extra"] {
-            --fs-base: 26px;
-            --fs-h1: 26px; /* Header constrains */
-            --fs-h2: 30px;
-            --fs-btn: 28px;
-        }
-
-        /* Dark Mode Variables */
-        [data-theme="dark"] {
-            --primary-color: #66BB6A;
-            --accent-color: #FFA726;
-            --text-color: #EEEEEE;
-            --bg-color: #121212;
-            --card-bg: #1E1E1E;
-            --border-color: #444444;
-            --step-inactive: #444444;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            font-size: var(--fs-base);
-            transition: background-color 0.3s, color 0.3s, font-size 0.2s;
-        }
-
-        /* --- Layout Container --- */
-        #app {
-            max-width: 420px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-            position: relative;
-            padding-bottom: 100px; /* Space for footer/fab */
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-        }
-
-        /* --- Header & Banner --- */
-        .header-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header {
-            background-color: var(--card-bg);
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        h1 {
-            font-size: var(--fs-h1);
-            margin: 0;
-            color: var(--primary-color);
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 12px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            padding: 0;
-        }
-
-        /* Trial Banner */
-        .trial-banner {
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background 0.3s, color 0.3s;
-        }
-        .trial-banner.gold {
-            background: linear-gradient(135deg, #FFD700, #FFA000);
-            color: #333;
-            border-bottom: 1px solid #E65100;
-        }
-        .trial-banner.expired {
-            background: #FFEBEE;
-            color: #D32F2F;
-            border-bottom: 1px solid #D32F2F;
-            animation: pulseBanner 2s infinite;
-        }
-
-        @keyframes pulseBanner {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-        
-        /* --- Progress Bar --- */
-        .progress-container {
-            padding: 10px 16px;
-            background: var(--card-bg);
-            margin-bottom: 10px;
-        }
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-        }
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--step-inactive);
-            z-index: 0;
-            transform: translateY(-50%);
-        }
-        .step-indicator {
-            width: 30px;
-            height: 30px;
-            background: var(--step-inactive);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #fff;
-            position: relative;
-            z-index: 1;
-            font-weight: bold;
-        }
-        .step-indicator.active {
-            background: var(--primary-color);
-        }
-        .step-indicator.completed {
-            background: var(--primary-color);
-        }
-
-        /* --- Main Content --- */
-        main {
-            padding: 16px;
-        }
-
-        h2 {
-            font-size: var(--fs-h2);
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 8px;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .btn-card {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.1s, border-color 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 110px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .btn-card:active {
-            transform: scale(0.98);
-            background-color: var(--step-inactive);
-        }
-
-        .btn-card.selected {
-            border-color: var(--primary-color);
-            background-color: rgba(46, 125, 50, 0.1);
-        }
-
-        .btn-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .btn-label {
-            font-size: var(--fs-base);
-            font-weight: bold;
-            color: var(--text-color);
-            line-height: 1.3;
-        }
-
-        /* --- Form Elements --- */
-        .form-group {
-            margin-bottom: 24px;
-        }
-        .form-label {
-            font-size: var(--fs-base);
-            font-weight: bold;
-            margin-bottom: 12px;
-            display: block;
-            color: var(--primary-color);
-        }
-        .radio-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .radio-btn {
-            flex: 1;
-            min-width: 90px;
-        }
-        .radio-input {
-            display: none;
-        }
-        .radio-label {
-            display: block;
-            padding: 14px;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .radio-input:checked + .radio-label {
-            background-color: var(--primary-color);
-            color: #fff;
-            border-color: var(--primary-color);
-        }
-
-        /* Input Controls */
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .input-group {
-            flex: 1;
-        }
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 4px;
-            color: var(--text-color);
-            font-weight: bold;
-        }
-        .simple-input, .simple-select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: var(--fs-base);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: inherit;
-            appearance: none;
-        }
-        .simple-select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-        [data-theme="dark"] .simple-select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23EEEEEE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-        }
-
-        .btn-next {
-            width: 100%;
-            padding: 18px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: var(--fs-btn);
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            text-decoration: none; /* aタグ用 */
-            display: block; /* aタグ用 */
-            text-align: center; /* aタグ用 */
-        }
-
-        /* --- Result --- */
-        .result-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            border-top: 6px solid var(--accent-color);
-        }
-
-        .prescription-title {
-            font-size: var(--fs-h2);
-            font-weight: bold;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 16px;
-            line-height: 1.4;
-        }
-
-        .cause-section {
-            background-color: rgba(0,0,0,0.03);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .section-header {
-            font-size: var(--fs-base);
-            font-weight: bold;
-            margin: 16px 0 8px 0;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 4px;
-        }
-
-        .todo-list, .routine-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .todo-item {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-        }
-        .todo-checkbox {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
-            margin-top: 4px;
-            flex-shrink: 0;
-            accent-color: var(--primary-color);
-        }
-        
-        .ng-box {
-            background-color: #FFEBEE;
-            border-left: 5px solid #F44336;
-            padding: 12px;
-            border-radius: 4px;
-            color: #B71C1C;
-            font-weight: bold;
-        }
-        [data-theme="dark"] .ng-box {
-            background-color: #3E2723;
-            color: #FFCDD2;
-        }
-
-        .routine-item {
-            margin-bottom: 10px;
-            font-size: var(--fs-base);
-        }
-        .routine-number {
-            display: inline-block;
-            width: 26px;
-            height: 26px;
-            background: var(--text-color);
-            color: var(--bg-color);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 26px;
-            font-size: 16px;
-            margin-right: 8px;
-        }
-
-        .memo-area {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: var(--fs-base);
-            font-family: inherit;
-            margin-top: 10px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            resize: vertical;
-        }
-
-        .btn-save {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            border: none;
-            border-radius: 8px;
-            font-size: var(--fs-base);
-            font-weight: bold;
-            margin-top: 12px;
-            cursor: pointer;
-        }
-        
-        .btn-line {
-            width: 100%;
-            padding: 14px;
-            background-color: #06C755;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: var(--fs-base);
-            font-weight: bold;
-            margin-top: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        /* --- Footer & FAB --- */
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            padding-bottom: 40px;
-        }
-        
-        .btn-link {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            text-decoration: underline;
-            font-size: 16px;
-            margin: 0 10px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .fab-emergency {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #D32F2F;
-            color: white;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            cursor: pointer;
-            z-index: 150;
-            border: 2px solid white;
-            animation: pulse 2s infinite;
-        }
-        .fab-label {
-            position: absolute;
-            bottom: -20px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #D32F2F;
-            background: rgba(255,255,255,0.9);
-            padding: 2px 4px;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-
-        /* Modals */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 100;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal.open {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            max-height: 85vh;
-            border-radius: 12px;
-            padding: 24px;
-            overflow-y: auto;
-            position: relative;
-        }
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 32px;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            padding: 0 10px;
-            line-height: 1;
-        }
-        
-        .modal-header {
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-            color: var(--primary-color);
-        }
-
-        /* Settings Styles */
-        .settings-section {
-            margin-bottom: 24px;
-        }
-        .settings-label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        .size-btns {
-            display: flex;
-            gap: 8px;
-        }
-        .size-btn {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-color);
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .size-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        .theme-switch-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-        }
-        .settings-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 16px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            margin-bottom: 8px;
-        }
-        .settings-note {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Help Styles */
-        .help-list {
-            list-style: none;
-            padding: 0;
-        }
-        .help-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .help-icon {
-            font-size: 28px;
-            margin-right: 12px;
-            min-width: 40px;
-            text-align: center;
-        }
-        .help-text h4 {
-            margin: 0 0 4px 0;
-            font-size: 18px;
-            color: var(--primary-color);
-        }
-        .help-text p {
-            margin: 0;
-            font-size: 15px;
-            color: var(--text-color);
-        }
-
-        /* Premium Styles */
-        .premium-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA000);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .password-box {
-            background: rgba(0,0,0,0.05);
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .lock-icon {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
+            background-color: rgba(0,0,0,0.7);
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            backdrop-filter: blur(4px);
         }
-
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-in; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .modal.show { display: flex; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
-<div id="app">
-    <div class="header-wrapper">
-        <header>
-            <h1 onclick="app.reset()" title="トップへ戻る">1分ゴルフコーチ</h1>
-            <div class="header-controls">
-                <button id="headerPremiumBtn" class="premium-btn" onclick="app.showModal('premiumModal')" aria-label="特別会員">👑 <span style="font-size:12px;">特別会員</span></button>
-                <button class="icon-btn" onclick="app.showModal('helpModal')" aria-label="使い方">❓</button>
-                <button class="icon-btn" onclick="app.showModal('settingsModal')" aria-label="設定">⚙️</button>
+    <header class="bg-white shadow-sm sticky top-0 z-50 py-3 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="./SPC考えるをひとりにしない.png" alt="SPC Logo" class="h-8 md:h-10 w-auto" onerror="this.src='https://placehold.co/400x100/1e40af/FFFFFF?text=Smile+Plus+Consulting';">
+            </a>
+            <a href="#contact" class="bg-primary text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-base font-medium">
+                お問い合わせ
+            </a>
+        </div>
+    </header>
+
+    <section class="hero-pattern py-10 md:py-24 border-b border-blue-100 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- スマホで1行に収まるようサイズを text-xl に微調整 -->
+            <h1 class="text-xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-6 leading-tight">
+                “考えるを、<span class="text-primary inline-block border-b-2 md:border-b-4 border-accent">ひとりにしない</span>”
+            </h1>
+            <!-- スマホで1行に収まるよう文言をシンプルにし、サイズを text-sm に調整 -->
+            <p class="text-sm md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                経営者の「困った」を解決するパートナーとして。
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="py-10 md:py-20 bg-white flex-grow">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">お問い合わせフォーム</h2>
+                <p class="text-xs md:text-base text-gray-600">以下の項目を入力し、送信方法を選択してください。</p>
             </div>
-        </header>
-        <div id="trialBanner" class="trial-banner" onclick="app.showModal('premiumModal')">
+
+            <form id="contactForm" class="space-y-6 bg-gray-50 p-5 md:p-10 rounded-2xl md:rounded-3xl shadow-sm border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">お名前 <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" required placeholder="山田 太郎" class="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary transition text-base">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">メールアドレス <span class="text-red-500">*</span></label>
+                        <input type="email" id="email" required placeholder="example@gmail.com" class="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary transition text-base">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">お問い合わせ内容 <span class="text-red-500">*</span></label>
+                    <textarea id="message" rows="5" required placeholder="例：パートナーシップのご相談、アプリの活用方法について、など" class="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary transition resize-none text-base"></textarea>
+                </div>
+
+                <div class="flex items-start">
+                    <input id="privacy" type="checkbox" required class="mt-1 w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary cursor-pointer">
+                    <label for="privacy" class="ml-3 text-xs md:text-sm text-gray-600 cursor-pointer font-medium text-left leading-tight">
+                        個人情報の取り扱いに同意します。
+                    </label>
+                </div>
+
+                <div class="text-center pt-2">
+                    <button type="submit" class="w-full md:w-auto px-10 py-4 bg-primary text-white font-bold rounded-full hover:bg-blue-900 transition shadow-md flex items-center justify-center mx-auto text-lg">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>
+                        <span>送信方法を選択する</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- モーダル: 送信方法の選択 -->
+    <div id="sendOptionsModal" class="modal">
+        <div class="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl max-w-lg w-[92%] mx-4 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 p-2">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            
+            <h3 class="text-lg md:text-xl font-bold mb-6 text-center text-gray-800">送信方法を選んでください</h3>
+            
+            <div class="space-y-4">
+                <button onclick="sendViaDefault()" class="w-full flex items-center p-3 md:p-4 border-2 border-gray-100 hover:border-blue-500 hover:bg-blue-50 rounded-xl md:rounded-2xl transition-all group text-left">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mr-3 md:mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-envelope text-lg"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="font-bold text-sm md:text-base text-gray-800">メールソフトで送る</p>
+                        <p class="text-[10px] md:text-xs text-gray-500">iPhoneメール、Outlookなど</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-300"></i>
+                </button>
+
+                <button onclick="sendViaGmail()" class="w-full flex items-center p-3 md:p-4 border-2 border-gray-100 hover:border-red-500 hover:bg-red-50 rounded-xl md:rounded-2xl transition-all group text-left">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0 mr-3 md:mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        <i class="fa-brands fa-google text-lg"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="font-bold text-sm md:text-base text-gray-800">Gmailで送る</p>
+                        <p class="text-[10px] md:text-xs text-gray-500">WebブラウザのGmailを使う方</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-300"></i>
+                </button>
+
+                <div class="border-t border-gray-100 my-4 pt-4">
+                    <p class="text-xs md:text-sm font-bold text-gray-600 mb-2">手動で送る場合：</p>
+                    <div class="bg-gray-50 p-3 md:p-4 rounded-xl border border-gray-200">
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-2">本文をコピーして spc@smileplusctg.com までお送りください。</p>
+                        <textarea id="manualBody" rows="4" readonly class="w-full bg-white border border-gray-200 rounded p-2 text-[10px] md:text-xs mb-3 outline-none focus:ring-2 focus:ring-blue-500" onClick="this.select()"></textarea>
+                        <button onclick="copyToClipboard()" id="copyBtn" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-lg text-sm transition-colors flex items-center justify-center">
+                            <i class="fa-solid fa-copy mr-2"></i>本文をコピーする
+                        </button>
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
 
-    <div class="progress-container">
-        <div class="progress-bar">
-            <div class="step-indicator active" id="step1-ind">1</div>
-            <div class="step-indicator" id="step2-ind">2</div>
-            <div class="step-indicator" id="step3-ind">3</div>
-        </div>
-    </div>
-
-    <main>
-        <div id="step1" class="step-content fade-in">
-            <h2>今の悩みは？</h2>
-            <div class="card-grid" id="problemGrid">
-                </div>
-        </div>
-
-        <div id="step2" class="step-content hidden fade-in">
-            <h2>状況を教えてください</h2>
-            
-            <div class="form-group">
-                <span class="form-label">使用クラブ</span>
-                <div class="radio-group">
-                    <div class="radio-btn">
-                        <input type="radio" name="club" id="club-driver" value="driver" class="radio-input" checked>
-                        <label for="club-driver" class="radio-label">1W</label>
-                    </div>
-                    <div class="radio-btn">
-                        <input type="radio" name="club" id="club-wood" value="wood" class="radio-input">
-                        <label for="club-wood" class="radio-label">FW/UT</label>
-                    </div>
-                    <div class="radio-btn">
-                        <input type="radio" name="club" id="club-iron" value="iron" class="radio-input">
-                        <label for="club-iron" class="radio-label">アイアン</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <span class="form-label">現在の場所</span>
-                <div class="radio-group">
-                    <div class="radio-btn">
-                        <input type="radio" name="scene" id="scene-range" value="range" class="radio-input" checked>
-                        <label for="scene-range" class="radio-label">練習場</label>
-                    </div>
-                    <div class="radio-btn">
-                        <input type="radio" name="scene" id="scene-course" value="course" class="radio-input">
-                        <label for="scene-course" class="radio-label">ラウンド</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <span class="form-label">いつもの球筋</span>
-                <div class="radio-group">
-                    <div class="radio-btn">
-                        <input type="radio" name="trend" id="trend-slice" value="slice" class="radio-input" checked>
-                        <label for="trend-slice" class="radio-label">右系</label>
-                    </div>
-                    <div class="radio-btn">
-                        <input type="radio" name="trend" id="trend-hook" value="hook" class="radio-input">
-                        <label for="trend-hook" class="radio-label">左系</label>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn-next" onclick="app.goToStep(3)">診断する</button>
-            <button class="btn-link" style="width:100%; margin-top:10px;" onclick="app.goToStep(1)">戻る</button>
-        </div>
-
-        <div id="step3" class="step-content hidden fade-in">
-            <h2>コーチからの処方箋</h2>
-            
-            <div id="resultContainer">
-                </div>
-
-            <div class="result-card">
-                <span class="section-header">上達記録（履歴に残す）</span>
-                
-                <div class="input-row">
-                    <div class="input-group">
-                        <label for="recordDate">いつ</label>
-                        <input type="date" id="recordDate" class="simple-input">
-                    </div>
-                    <div class="input-group">
-                        <label for="recordPlaceSelect">どこで</label>
-                        <select id="recordPlaceSelect" class="simple-select">
-                            <option value="練習場">練習場</option>
-                            <option value="コース">コース</option>
-                            <option value="自宅">自宅</option>
-                            <option value="レッスン">レッスン</option>
-                            <option value="other">その他 (手入力)</option>
-                        </select>
-                        <input type="text" id="recordPlaceInput" class="simple-input hidden" placeholder="場所を入力" style="margin-top:6px;">
-                    </div>
-                </div>
-
-                <label for="userMemo" style="display:block; font-size:14px; font-weight:bold; margin-bottom:4px; color:var(--text-color);">気付き・メモ</label>
-                <textarea class="memo-area" id="userMemo" rows="3" placeholder="打った感触やスコアなど..."></textarea>
-                
-                <button class="btn-save" onclick="app.saveResult()">📖 履歴に保存する</button>
-                <button class="btn-line" onclick="app.shareLine()">💬 LINEで送る</button>
-            </div>
-
-            <button class="btn-next" style="background-color: var(--step-inactive); color: var(--text-color);" onclick="app.reset()">最初からやり直す</button>
-        </div>
-    </main>
-
-    <footer>
-        <button class="btn-link" onclick="app.toggleHistory()">📜 過去の履歴を見る</button>
+    <footer class="bg-gray-900 text-white py-10 text-center px-4">
+        <p class="text-gray-400 text-[10px] md:text-sm">© 2024 Smile Plus Consulting. All rights reserved.</p>
     </footer>
 
-    <div class="fab-emergency" onclick="app.showModal('emergencyModal')">
-        🆘
-        <span class="fab-label">お助け</span>
-    </div>
+    <script>
+        let emailData = {
+            to: "spc@smileplusctg.com",
+            subject: "【お問い合わせ】Smile Plus Consulting サイトより",
+            body: ""
+        };
 
-    <div id="historyModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="app.closeModal('historyModal')">×</button>
-            <div class="modal-header">保存した履歴</div>
-            <div id="historyList">
-                <p style="text-align:center; color:#888;">履歴はありません</p>
-            </div>
-            <button class="btn-link" onclick="app.clearHistory()" style="color:#d32f2f; width:100%; margin-top:20px;">履歴を全消去</button>
-        </div>
-    </div>
+        const form = document.getElementById('contactForm');
+        const modal = document.getElementById('sendOptionsModal');
 
-    <div id="emergencyModal" class="modal">
-        <div class="modal-content" style="background-color: #FFF3E0;">
-            <button class="close-modal" onclick="app.closeModal('emergencyModal')">×</button>
-            <h2 style="color:#D84315; border-bottom:none;">緊急！ワンポイント</h2>
-            <p>今の状況に近いものを選んでください。</p>
-            <ul class="emergency-list">
-                <li onclick="alert('【深呼吸】\n\n1. 空を見上げて鼻から大きく吸う\n2. 口からゆっくり吐く\n\nまずは落ち着きましょう。')">💓 ドキドキが止まらない</li>
-                <li onclick="alert('【グリップをゆるめる】\n\n1. クラブを短く持つ\n2. 生卵を持つくらい優しく握る\n3. 半分の力で振る')">🏌️‍♂️ チョロ・ダフリが連発</li>
-                <li onclick="alert('【リズムだけ考える】\n\n「チャー・シュー・メン」\nまたは\n「イチ・ニ・サーン」\n\nリズムよく振ることだけに集中！')">😫 どう振ればいいか忘れた</li>
-                <li onclick="alert('【ターゲットを大きく】\n\nピンではなく「グリーンセンター」や「広い場所」を狙う。\n\n安全第一でいきましょう。')">🌳 トラブルショット</li>
-            </ul>
-        </div>
-    </div>
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
 
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="app.closeModal('settingsModal')">×</button>
-            <div class="modal-header">設定</div>
-            
-            <div class="settings-section">
-                <span class="settings-label">文字の大きさ</span>
-                <div class="size-btns">
-                    <button class="size-btn" data-setsize="medium" onclick="app.setFontSize('medium')">標準</button>
-                    <button class="size-btn" data-setsize="large" onclick="app.setFontSize('large')">大</button>
-                    <button class="size-btn" data-setsize="extra" onclick="app.setFontSize('extra')">特大</button>
-                </div>
-            </div>
+            emailData.body = `【お問い合わせ内容】\n\n■お名前：\n${name}\n\n■返信先メールアドレス：\n${email}\n\n■メッセージ：\n${message}\n\n--------------------------------------------------\n※このメールを送信してお問い合わせを完了してください。`;
+            document.getElementById('manualBody').value = emailData.body;
+            modal.classList.add('show');
+        });
 
-            <div class="settings-section">
-                <div class="theme-switch-row">
-                    <span class="settings-label" style="margin:0;">ダークモード（夜用）</span>
-                    <input type="checkbox" id="themeSwitch" onchange="app.toggleTheme(this.checked)" style="transform:scale(1.5);">
-                </div>
-            </div>
-
-            <div class="settings-section" style="border-top:1px solid var(--border-color); padding-top:16px;">
-                <span class="settings-label">ユーザー情報（連携用）</span>
-                <input type="text" id="settingNick" class="settings-input" placeholder="お名前（LINE署名用）">
-                <input type="email" id="settingEmail" class="settings-input" placeholder="メールアドレス（控え用）">
-                <p class="settings-note">※入力内容は端末内に保存され、共有時の署名などに使用されます。外部には送信されません。</p>
-                <button class="btn-save" onclick="app.saveSettings()">設定を保存する</button>
-            </div>
-            
-            <div id="cancelPremiumSection" class="settings-section hidden" style="border-top:1px solid var(--border-color); padding-top:16px;">
-                <span class="settings-label" style="color:#D32F2F;">特別会員の解約</span>
-                <p class="settings-note">パスワードをリセットし、無料版に戻ります。</p>
-                <button class="btn-save" style="background:#fff; color:#D32F2F; border:1px solid #D32F2F;" onclick="app.cancelPremium()">解約する</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="helpModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="app.closeModal('helpModal')">×</button>
-            <div class="modal-header">このアプリの使い方</div>
-            
-            <ul class="help-list">
-                <li class="help-item">
-                    <div class="help-icon">🎯</div>
-                    <div class="help-text">
-                        <h4>目的</h4>
-                        <p>あなたのゴルフの悩みを1分で診断し、今すぐやるべき解決策をアドバイスします。</p>
-                    </div>
-                </li>
-                <li class="help-item">
-                    <div class="help-icon">1️⃣</div>
-                    <div class="help-text">
-                        <h4>悩みを選ぶ</h4>
-                        <p>「スライス」「ダフリ」など、今一番困っている症状を選んでください。</p>
-                    </div>
-                </li>
-                <li class="help-item">
-                    <div class="help-icon">2️⃣</div>
-                    <div class="help-text">
-                        <h4>状況を選ぶ</h4>
-                        <p>「使用クラブ」や「場所（練習場/コース）」を選ぶと、状況に合った助言になります。</p>
-                    </div>
-                </li>
-                <li class="help-item">
-                    <div class="help-icon">3️⃣</div>
-                    <div class="help-text">
-                        <h4>処方箋を見る</h4>
-                        <p>やるべき3つのポイントが表示されます。LINEで送ったり、履歴に残すこともできます。</p>
-                    </div>
-                </li>
-            </ul>
-            <button class="btn-next" onclick="app.closeModal('helpModal')">閉じる</button>
-        </div>
-    </div>
-
-    <div id="premiumModal" class="modal">
-        <div class="modal-content" style="background-color: #FFFDE7; border: 2px solid #FFD700;">
-            <button class="close-modal" onclick="app.closeModal('premiumModal')">×</button>
-            <div class="modal-header" style="color: #F57F17; border-bottom-color: #F57F17;">
-                👑 特別会員のご案内
-            </div>
-            
-            <p style="font-weight:bold; font-size:16px; text-align:center; color:#D32F2F; margin-bottom: 0;" id="premiumModalMessage">
-                無料体験が終了しました。
-            </p>
-            <p style="text-align:center; color:#333; font-size:14px; margin-top:8px;">
-                引き続きご利用いただくには、特別会員（月額）へのご登録が必要です。
-            </p>
-
-            <a href="https://buy.stripe.com/eVqfZg5ey5V3elhg7qcV20H" target="_blank" class="btn-next" style="background: linear-gradient(135deg, #F57F17, #FF6F00); box-shadow: 0 4px 10px rgba(245, 127, 23, 0.4); margin-top: 20px;">
-                お申し込みはこちら（月額500円）
-            </a>
-            <p style="font-size:12px; color:#666; text-align:center; margin-top:8px;">
-                ※お申し込み後、メールにて「パスワード」をお送りします。
-            </p>
-
-            <div class="password-box">
-                <span class="settings-label" style="font-size:14px;">▼ 既にパスワードをお持ちの方</span>
-                <input type="text" id="premiumPassword" class="settings-input" placeholder="メールで届いたパスワードを入力" style="margin-bottom:12px; text-align:center; font-weight:bold; letter-spacing: 2px;">
-                <button class="btn-save" style="margin-top:0; background:#2E7D32;" onclick="app.verifyPassword()">パスワードを認証する</button>
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-<script>
-    /* --- Data Definition --- */
-    const PROBLEMS = [
-        { id: 'slice', label: '右プッシュ\nスライス', icon: '🍌' },
-        { id: 'hook', label: '左引っかけ\nチーピン', icon: '🦆' },
-        { id: 'top', label: 'トップ\nチョロ', icon: '⬆️' },
-        { id: 'duff', label: 'ダフリ\n飛ばない', icon: '⛏️' },
-        { id: 'contact', label: '芯に\n当たらない', icon: '💥' },
-        { id: 'distance', label: '飛距離が\n落ちた', icon: '📉' },
-        { id: 'start', label: '朝イチの\n不安', icon: '🥶' },
-        { id: 'collapse', label: '後半\n崩れる', icon: '🏚️' },
-        { id: 'bunker', label: 'バンカーが\n出ない', icon: '🏖️', isPremium: true },
-        { id: 'putt', label: 'パターの\n距離感', icon: '⛳', isPremium: true }
-    ];
-
-    const ADVICE_DB = {
-        'slice': {
-            title: '背中をターゲットに向け続ける',
-            cause: '体が早く開き、クラブが遅れて入っています。',
-            todos: [
-                '右足を半歩後ろに引いて構える',
-                'インパクトまで胸を右に向ける意識',
-                'フィニッシュまで一気に振り切る'
-            ],
-            ng: 'ボールを当てにいく（手打ちになる）',
-            routine: ['素振りで風切り音を「左耳」で聞く', '深呼吸を一回', '目標の「左端」を見て打つ']
-        },
-        'hook': {
-            title: '体の回転を止めずに振り抜く',
-            cause: '手が返りすぎたり、回転が止まって手だけ動いています。',
-            todos: [
-                'グリップを少しウィーク（左回し）に',
-                'ボールの位置をボール半個「右」へ',
-                'おヘソを目標に向けるまで回し切る'
-            ],
-            ng: '右肩を下げてすくい上げる',
-            routine: ['グリップ圧を5割に緩める', 'フォローの形をイメージ', 'リズムだけ考えて振る']
-        },
-        'top': {
-            title: '「膝の高さ」をキープする',
-            cause: 'インパクト前に上体が起き上がっています。',
-            todos: [
-                'アドレスで膝を軽く曲げ直す',
-                'ボールではなく「ボールの赤道」を見る',
-                'インパクト後も芝を見る意識'
-            ],
-            ng: 'ボールを上げようとする',
-            routine: ['目線を低く保つ', '足裏の重心を感じる', '7割の力でコンパクトに']
-        },
-        'duff': {
-            title: '左足体重でインパクト',
-            cause: '右足に体重が残り、手前を叩いています。',
-            todos: [
-                '最初から「左足6：右足4」で構える',
-                'ボールを「直接」クリーンに打つ意識',
-                '右踵を早めに地面から浮かせる'
-            ],
-            ng: 'ボールを長く見すぎる',
-            routine: ['左足を踏み込む素振り', 'ボールの左側を見る', 'フィニッシュで3秒止まる']
-        },
-        'contact': {
-            title: '大振り禁止、ハーフスイング',
-            cause: 'スイング軸が左右上下にブレています。',
-            todos: [
-                'スタンス幅を靴一足分狭くする',
-                '「9時〜3時」の振り幅で打つ',
-                'グリップを短く持つ'
-            ],
-            ng: 'フルスイングで飛ばそうとする',
-            routine: ['連続素振りで軸を感じる', '力を抜いて脱力', '真芯に当てる音だけ想像']
-        },
-        'distance': {
-            title: '体全体を使ったねじれ戻し',
-            cause: '手先だけで振っており、体幹が使えていません。',
-            todos: [
-                'バックスイングで左肩を顎の下に入れる',
-                '切り返しで「下半身」から始動する',
-                'フィニッシュを大きく取る'
-            ],
-            ng: '腕力だけで強く叩く',
-            routine: ['深い捻転を確認する素振り', '足の指で地面を掴む', 'ゆったり大きなリズム']
-        },
-        'start': {
-            title: '6割の力でフェアウェイ真ん中へ',
-            cause: '緊張で体が硬くなり、リズムが早くなっています。',
-            todos: [
-                'ゆっくり息を吐いてから構える',
-                '「当てるだけ」のつもりで振る',
-                '一番得意なクラブを持つ'
-            ],
-            ng: '「飛ばそう」「乗せよう」と欲張る',
-            routine: ['空を見上げて深呼吸', 'ターゲットをぼんやり見る', '「イチ、ニ、サーン」と唱える']
-        },
-        'collapse': {
-            title: '下半身の土台を作り直す',
-            cause: '疲労で下半身が止まり、手打ちになっています。',
-            todos: [
-                'アドレスで足腰の踏ん張りを再確認',
-                '水分補給と深呼吸',
-                '素振りを2回して体のキレを戻す'
-            ],
-            ng: '修正しようといろいろ考えすぎる',
-            routine: ['股関節を軽くストレッチ', 'リズムを一定にする', '「フィニッシュ」だけ意識']
-        },
-        'bunker': {
-            title: '砂ごと爆発させる',
-            cause: 'ボールだけを綺麗に打とうとしています。',
-            todos: [
-                'フェースを少し開いて構える',
-                'ボールの手前3cmの砂を狙う',
-                '砂を外に放り出すイメージで振り抜く'
-            ],
-            ng: 'すくい上げようとする',
-            routine: ['足場を砂にしっかり埋める', '重心を低く保つ', 'しっかり最後まで振り切る']
-        },
-        'putt': {
-            title: '振り幅で距離を作る',
-            cause: 'インパクトの強弱で距離を合わせようとしています。',
-            todos: [
-                '足幅を基準に「テークバックとフォロー」を同じにする',
-                'ボールをヒットせず、ストロークの中にボールがある意識',
-                'カップを見ず、ボールの転がりをイメージ'
-            ],
-            ng: 'インパクトで緩む・パンチが入る',
-            routine: ['カップまでの歩測をする', '素振りで距離感の素振り', 'ボールのロゴを狙い線に合わせる']
-        }
-    };
-
-    /* --- App Logic --- */
-    const app = {
-        state: {
-            step: 1,
-            problem: null,
-            club: 'driver',
-            scene: 'range',
-            trend: 'slice',
-            history: [],
-            fontSize: 'medium',
-            theme: 'light',
-            userNick: '',
-            userEmail: '',
-            isPremium: false,
-            usageCount: 0 // 無料利用回数 (Max: 3)
-        },
-
-        init: function() {
-            // Load Settings
-            const savedTheme = localStorage.getItem('golfCoachTheme') || 'light';
-            this.toggleTheme(savedTheme === 'dark');
-
-            const savedFont = localStorage.getItem('golfCoachFontSize') || 'medium';
-            this.setFontSize(savedFont);
-
-            this.state.userNick = localStorage.getItem('golfCoachNick') || '';
-            this.state.userEmail = localStorage.getItem('golfCoachEmail') || '';
-            document.getElementById('settingNick').value = this.state.userNick;
-            document.getElementById('settingEmail').value = this.state.userEmail;
-
-            // Load Premium Status & Usage Count
-            this.state.isPremium = localStorage.getItem('golfCoachPremium') === 'true';
-            this.state.usageCount = parseInt(localStorage.getItem('golfCoachUsageCount') || '0', 10);
-
-            // Load history
-            const savedHistory = localStorage.getItem('golfCoachHistory');
-            if (savedHistory) {
-                this.state.history = JSON.parse(savedHistory);
-            }
-
-            // UI Initial Render
-            this.renderTrialBanner();
-            this.renderStep1();
-            
-            // Listeners
-            document.querySelectorAll('input[name="club"]').forEach(el => {
-                el.addEventListener('change', (e) => this.state.club = e.target.value);
-            });
-            document.querySelectorAll('input[name="scene"]').forEach(el => {
-                el.addEventListener('change', (e) => this.state.scene = e.target.value);
-            });
-            document.querySelectorAll('input[name="trend"]').forEach(el => {
-                el.addEventListener('change', (e) => this.state.trend = e.target.value);
-            });
-            
-            document.getElementById('recordPlaceSelect').addEventListener('change', (e) => {
-                const input = document.getElementById('recordPlaceInput');
-                if (e.target.value === 'other') {
-                    input.classList.remove('hidden');
-                    input.focus();
-                } else {
-                    input.classList.add('hidden');
-                }
-            });
-        },
-
-        /* Trial Banner Rendering */
-        renderTrialBanner: function() {
-            const banner = document.getElementById('trialBanner');
-            const headerBtn = document.getElementById('headerPremiumBtn');
-            const cancelBtn = document.getElementById('cancelPremiumSection');
-            
-            if (this.state.isPremium) {
-                // 会員状態
-                banner.style.display = 'none';
-                headerBtn.style.display = 'none';
-                cancelBtn.classList.remove('hidden');
-                return;
-            }
-
-            // 非会員状態
-            banner.style.display = 'block';
-            headerBtn.style.display = 'block';
-            cancelBtn.classList.add('hidden');
-
-            const maxUsage = 3;
-            const remaining = maxUsage - this.state.usageCount;
-
-            if (this.state.usageCount === 0) {
-                banner.className = 'trial-banner gold';
-                banner.innerHTML = '🎁 今なら3回まで無料でお試しいただけます（登録不要）';
-            } else if (remaining > 0) {
-                banner.className = 'trial-banner gold';
-                banner.innerHTML = `🎁 無料体験 残り${remaining}回（全3回）`;
-            } else {
-                banner.className = 'trial-banner expired';
-                banner.innerHTML = '⚠️ 無料体験が終了しました。ご購入はこちら→';
-            }
-        },
-
-        /* Password Verification */
-        verifyPassword: async function() {
-            const pw = document.getElementById('premiumPassword').value.trim();
-            
-            // ボタンを「認証中」にして連打を防止
-            const btn = document.querySelector('.password-box .btn-save');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ 認証中...';
-            btn.disabled = true;
-
-            try {
-                // ★作成したCloudflare WorkersのURL
-                const workerUrl = 'https://one-coach.yymmatsu.workers.dev/api/verify-password'; 
-                
-                // Workersにパスワードを送信して判定してもらう
-                const response = await fetch(workerUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pw })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    // 認証成功時
-                    alert('認証に成功しました！\n特別会員としてすべての機能をご利用いただけます。');
-                    this.state.isPremium = true;
-                    localStorage.setItem('golfCoachPremium', 'true');
-                    this.closeModal('premiumModal');
-                    this.renderTrialBanner();
-                    this.renderStep1(); // 鍵マークを消すために再描画
-                } else {
-                    // 認証失敗時
-                    alert('パスワードが間違っています。\n決済後のサンクスメールをご確認ください。');
-                }
-            } catch (error) {
-                // 通信エラー等
-                alert('通信エラーが発生しました。インターネット接続を確認し、もう一度お試しください。');
-            } finally {
-                // ボタンを元に戻す
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        },
-
-        cancelPremium: function() {
-            if(confirm('特別会員を解約しますか？\n（解約後は無料版に戻ります）')) {
-                this.state.isPremium = false;
-                localStorage.removeItem('golfCoachPremium');
-                this.closeModal('settingsModal');
-                this.renderTrialBanner();
-                this.renderStep1();
-                alert('解約手続きが完了しました。');
-            }
-        },
-
-        /* UI/Modal Control */
-        showModal: function(modalId) {
-            if (modalId === 'premiumModal') {
-                const msg = document.getElementById('premiumModalMessage');
-                if (this.state.usageCount >= 3) {
-                    msg.innerHTML = '⚠️ 無料体験が終了しました。';
-                    msg.style.color = '#D32F2F';
-                } else {
-                    msg.innerHTML = 'もっと上達したい方へ！';
-                    msg.style.color = '#333';
-                }
-            }
-            document.getElementById(modalId).classList.add('open');
-        },
-        closeModal: function(modalId) {
-            document.getElementById(modalId).classList.remove('open');
-        },
-
-        /* Settings Logic */
-        toggleTheme: function(isDark) {
-            const theme = isDark ? 'dark' : 'light';
-            this.state.theme = theme;
-            document.body.setAttribute('data-theme', theme);
-            document.getElementById('themeSwitch').checked = isDark;
-            localStorage.setItem('golfCoachTheme', theme);
-        },
-
-        setFontSize: function(size) {
-            this.state.fontSize = size;
-            document.body.setAttribute('data-fontsize', size);
-            localStorage.setItem('golfCoachFontSize', size);
-            document.querySelectorAll('.size-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.setsize === size);
-            });
-        },
-
-        saveSettings: function() {
-            const nick = document.getElementById('settingNick').value;
-            const email = document.getElementById('settingEmail').value;
-            this.state.userNick = nick;
-            this.state.userEmail = email;
-            localStorage.setItem('golfCoachNick', nick);
-            localStorage.setItem('golfCoachEmail', email);
-            alert('設定を保存しました！');
-            this.closeModal('settingsModal');
-        },
-
-        /* App Steps */
-        renderStep1: function() {
-            const grid = document.getElementById('problemGrid');
-            grid.innerHTML = '';
-            PROBLEMS.forEach(p => {
-                const btn = document.createElement('div');
-                btn.className = 'btn-card';
-                
-                // 特別会員向けかつ未課金の場合は鍵アイコンを表示
-                let lockHtml = '';
-                if (p.isPremium && !this.state.isPremium) {
-                    lockHtml = '<div class="lock-icon">🔒</div>';
-                    btn.style.opacity = '0.75';
-                    btn.style.background = 'var(--bg-color)';
-                }
-
-                btn.innerHTML = `
-                    ${lockHtml}
-                    <span class="btn-icon">${p.icon}</span>
-                    <span class="btn-label">${p.label.replace(/\n/g, '<br>')}</span>
-                `;
-                btn.onclick = () => {
-                    // 鍵付き機能をタップした場合
-                    if (p.isPremium && !this.state.isPremium) {
-                        this.showModal('premiumModal');
-                        return;
-                    }
-                    
-                    // 利用回数チェック
-                    if (!this.state.isPremium && this.state.usageCount >= 3) {
-                        this.showModal('premiumModal');
-                        return;
-                    }
-
-                    document.querySelectorAll('.btn-card').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    this.state.problem = p.id;
-                    setTimeout(() => this.goToStep(2), 200);
-                };
-                grid.appendChild(btn);
-            });
-        },
-
-        goToStep: function(stepNum) {
-            if (stepNum === 2 && !this.state.problem) return;
-            
-            this.state.step = stepNum;
-
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`step${stepNum}`).classList.remove('hidden');
-
-            document.querySelectorAll('.step-indicator').forEach((el, idx) => {
-                el.classList.remove('active', 'completed');
-                if (idx + 1 < stepNum) el.classList.add('completed');
-                if (idx + 1 === stepNum) el.classList.add('active');
-            });
-
-            window.scrollTo(0, 0);
-
-            if (stepNum === 3) {
-                this.generateResult();
-            }
-        },
-
-        generateResult: function() {
-            // 無料利用のカウントアップ
-            if (!this.state.isPremium) {
-                this.state.usageCount++;
-                localStorage.setItem('golfCoachUsageCount', this.state.usageCount);
-                this.renderTrialBanner(); // バナー表示更新
-            }
-
-            const problemId = this.state.problem;
-            const baseData = ADVICE_DB[problemId];
-            const context = { club: this.state.club, scene: this.state.scene, trend: this.state.trend };
-
-            let advice = JSON.parse(JSON.stringify(baseData));
-
-            if (context.club === 'driver') {
-                advice.todos.push('ティーアップの高さを確認');
-                if (problemId === 'slice') advice.ng = '思い切り叩きにいく';
-            } else if (context.club === 'iron') {
-                advice.todos.push('ダウンブロー（上から）を意識');
-            }
-
-            if (context.scene === 'course') {
-                advice.title = '【現場対応】' + advice.title;
-                advice.todos = advice.todos.slice(0, 2); 
-                advice.todos.push('ターゲットを安全な広い方向へ');
-                advice.routine[2] = '決めたら迷わず打つ';
-            } else {
-                advice.todos.push('ハーフスイングで形を確認');
-            }
-
-            if (context.trend === 'slice' && problemId === 'distance') {
-                advice.cause += ' スライス回転でロスしています。';
-            }
-
-            const container = document.getElementById('resultContainer');
-            container.innerHTML = `
-                <div class="result-card">
-                    <div class="prescription-title">${advice.title}</div>
-                    <div class="cause-section"><strong>今の状態：</strong><br>${advice.cause}</div>
-                    <div class="section-header">今すぐやること3つ</div>
-                    <ul class="todo-list">
-                        ${advice.todos.slice(0,3).map(t => `
-                            <li class="todo-item">
-                                <input type="checkbox" class="todo-checkbox">
-                                <span class="todo-text">${t}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    <div class="section-header">やってはいけない (NG)</div>
-                    <div class="ng-box">⚠️ ${advice.ng}</div>
-                    <div class="section-header">3球ルーティン</div>
-                    <div class="routine-list">
-                        ${advice.routine.map((r, i) => `
-                            <div class="routine-item">
-                                <span class="routine-number">${i+1}</span> ${r}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('userMemo').value = '';
-            document.getElementById('recordPlaceSelect').value = '練習場';
-            document.getElementById('recordPlaceInput').classList.add('hidden');
-            document.getElementById('recordPlaceInput').value = '';
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('recordDate').value = today;
-            
-            this.currentResult = {
-                title: advice.title,
-                problemId: problemId,
-                todos: advice.todos.slice(0,3)
+        function closeModal() { modal.classList.remove('show'); }
+        function sendViaDefault() { window.location.href = `mailto:${emailData.to}?subject=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(emailData.body)}`; }
+        function sendViaGmail() { window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${emailData.to}&su=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(emailData.body)}`, '_blank'); }
+        function copyToClipboard() {
+            const copyText = document.getElementById("manualBody");
+            copyText.select();
+            const showSuccess = () => {
+                const btn = document.getElementById('copyBtn');
+                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>コピーしました！';
+                btn.classList.add('bg-green-500', 'text-white');
+                setTimeout(() => { 
+                    btn.innerHTML = '<i class="fa-solid fa-copy mr-2"></i>本文をコピーする'; 
+                    btn.classList.remove('bg-green-500', 'text-white'); 
+                }, 2000);
             };
-        },
-
-        saveResult: function() {
-            const memo = document.getElementById('userMemo').value;
-            const dateVal = document.getElementById('recordDate').value;
-            const selectVal = document.getElementById('recordPlaceSelect').value;
-            let placeVal = selectVal === 'other' ? document.getElementById('recordPlaceInput').value || '場所未入力' : selectVal;
-
-            const historyItem = {
-                ...this.currentResult,
-                memo: memo,
-                recordDate: dateVal,
-                recordPlace: placeVal,
-                timestamp: new Date().getTime()
-            };
-
-            this.state.history.unshift(historyItem);
-            if (this.state.history.length > 20) this.state.history.pop(); 
-
-            localStorage.setItem('golfCoachHistory', JSON.stringify(this.state.history));
-            alert('履歴に保存しました！');
-        },
-
-        shareLine: function() {
-            const r = this.currentResult;
-            if (!r) return;
-            
-            const memo = document.getElementById('userMemo').value;
-            let text = `【1分ゴルフコーチ】\n処方箋：${r.title}\n\nやるべきこと：\n${r.todos.map(t=>'・'+t).join('\n')}`;
-            if(memo) text += `\n\nメモ：\n${memo}`;
-            if(this.state.userNick) text += `\n\nFrom: ${this.state.userNick}さんの共有`;
-
-            const url = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-        },
-
-        toggleHistory: function() {
-            this.showModal('historyModal');
-            const list = document.getElementById('historyList');
-            
-            if (this.state.history.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#888;">履歴はありません</p>';
-            } else {
-                list.innerHTML = this.state.history.map(item => {
-                    let dateDisplay = item.recordDate || new Date(item.timestamp || Date.now()).toLocaleDateString('ja-JP');
-                    let placeDisplay = item.recordPlace ? `<span class="history-place">@${item.recordPlace}</span>` : '';
-                    
-                    return `
-                    <div class="history-item">
-                        <div class="history-meta">
-                            <span>📅 ${dateDisplay}</span>
-                            ${placeDisplay}
-                        </div>
-                        <div class="history-title">${item.title}</div>
-                        ${item.memo ? `<div style="font-size:var(--fs-base); color:#666; margin-top:4px;">📝 ${item.memo}</div>` : ''}
-                    </div>
-                `}).join('');
-            }
-        },
-
-        clearHistory: function() {
-            if(confirm('本当に履歴を全て削除しますか？')) {
-                this.state.history = [];
-                localStorage.removeItem('golfCoachHistory');
-                this.toggleHistory(); 
-            }
-        },
-        
-        reset: function() {
-            this.state.problem = null;
-            this.goToStep(1);
+            if (navigator.clipboard) { navigator.clipboard.writeText(copyText.value).then(showSuccess); } else { document.execCommand('copy'); showSuccess(); }
         }
-    };
-
-    // Start App
-    document.addEventListener('DOMContentLoaded', () => {
-        app.init();
-    });
-
-</script>
+    </script>
 </body>
 </html>
