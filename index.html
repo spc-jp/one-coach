@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ゴルフ丨１分コーチ</title>
+    <title>1分ゴルフコーチ</title>
     <meta name="description" content="悩みを1分で解決！シニア向けゴルフアドバイスツール">
     <meta name="theme-color" content="#2E7D32">
     <style>
@@ -78,16 +78,19 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
 
-        /* --- Header --- */
+        /* --- Header & Banner --- */
+        .header-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         header {
             background-color: var(--card-bg);
             padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -96,7 +99,7 @@
             margin: 0;
             color: var(--primary-color);
             font-weight: bold;
-            cursor: pointer; /* クリック可能に見せる */
+            cursor: pointer;
         }
 
         .header-controls {
@@ -106,7 +109,7 @@
 
         .icon-btn {
             background: none;
-            border: none; /* Remove border for cleaner look */
+            border: none;
             width: 40px;
             height: 40px;
             font-size: 24px;
@@ -117,6 +120,34 @@
             justify-content: center;
             font-weight: bold;
             padding: 0;
+        }
+
+        /* Trial Banner */
+        .trial-banner {
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.3s, color 0.3s;
+        }
+        .trial-banner.gold {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            color: #333;
+            border-bottom: 1px solid #E65100;
+        }
+        .trial-banner.expired {
+            background: #FFEBEE;
+            color: #D32F2F;
+            border-bottom: 1px solid #D32F2F;
+            animation: pulseBanner 2s infinite;
+        }
+
+        @keyframes pulseBanner {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
         
         /* --- Progress Bar --- */
@@ -197,6 +228,7 @@
             justify-content: center;
             min-height: 110px;
             box-shadow: var(--shadow);
+            position: relative;
         }
 
         .btn-card:active {
@@ -272,7 +304,7 @@
         }
         .input-group label {
             display: block;
-            font-size: 14px; /* Label stays small */
+            font-size: 14px;
             margin-bottom: 4px;
             color: var(--text-color);
             font-weight: bold;
@@ -288,7 +320,6 @@
             font-family: inherit;
             appearance: none;
         }
-        /* Custom arrow for select */
         .simple-select {
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
@@ -311,6 +342,9 @@
             cursor: pointer;
             margin-top: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-decoration: none; /* aタグ用 */
+            display: block; /* aタグ用 */
+            text-align: center; /* aタグ用 */
         }
 
         /* --- Result --- */
@@ -415,7 +449,7 @@
         .btn-save {
             width: 100%;
             padding: 14px;
-            background-color: var(--text-color); /* Neutral for save */
+            background-color: var(--text-color);
             color: var(--bg-color);
             border: none;
             border-radius: 8px;
@@ -428,7 +462,7 @@
         .btn-line {
             width: 100%;
             padding: 14px;
-            background-color: #06C755; /* LINE Green */
+            background-color: #06C755;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -489,12 +523,6 @@
             padding: 2px 4px;
             border-radius: 4px;
             white-space: nowrap;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
 
         /* Modals */
@@ -623,49 +651,42 @@
             color: var(--text-color);
         }
 
-        /* History & Emergency shared styles */
-        .history-item {
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px 0;
-            cursor: pointer;
-        }
-        .history-meta {
+        /* Premium Styles */
+        .premium-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-weight: bold;
             display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 6px;
-        }
-        .history-place {
-            font-weight: bold;
-            color: var(--accent-color);
-            background: rgba(255, 143, 0, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        .history-title {
-            font-weight: bold;
-            font-size: var(--fs-base);
-            line-height: 1.4;
-        }
-        
-        .emergency-list {
-            list-style: none;
-            padding: 0;
-        }
-        .emergency-list li {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
+            align-items: center;
+            gap: 4px;
             cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .emergency-list li:hover {
-            background-color: rgba(0,0,0,0.05);
+        .password-box {
+            background: rgba(0,0,0,0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .lock-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
 
-        /* Utils */
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-in; }
 
@@ -679,16 +700,19 @@
 <body>
 
 <div id="app">
-    <!-- Header -->
-    <header>
-        <h1 onclick="app.reset()" title="トップへ戻る">ゴルフ丨１分コーチ</h1>
-        <div class="header-controls">
-            <button class="icon-btn" onclick="app.showModal('helpModal')" aria-label="使い方">❓</button>
-            <button class="icon-btn" onclick="app.showModal('settingsModal')" aria-label="設定">⚙️</button>
-        </div>
-    </header>
+    <div class="header-wrapper">
+        <header>
+            <h1 onclick="app.reset()" title="トップへ戻る">1分ゴルフコーチ</h1>
+            <div class="header-controls">
+                <button id="headerPremiumBtn" class="premium-btn" onclick="app.showModal('premiumModal')" aria-label="特別会員">👑 <span style="font-size:12px;">特別会員</span></button>
+                <button class="icon-btn" onclick="app.showModal('helpModal')" aria-label="使い方">❓</button>
+                <button class="icon-btn" onclick="app.showModal('settingsModal')" aria-label="設定">⚙️</button>
+            </div>
+        </header>
+        <div id="trialBanner" class="trial-banner" onclick="app.showModal('premiumModal')">
+            </div>
+    </div>
 
-    <!-- Progress -->
     <div class="progress-container">
         <div class="progress-bar">
             <div class="step-indicator active" id="step1-ind">1</div>
@@ -697,17 +721,13 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main>
-        <!-- Step 1: 悩み選択 -->
         <div id="step1" class="step-content fade-in">
             <h2>今の悩みは？</h2>
             <div class="card-grid" id="problemGrid">
-                <!-- JSで生成 -->
-            </div>
+                </div>
         </div>
 
-        <!-- Step 2: 状況選択 -->
         <div id="step2" class="step-content hidden fade-in">
             <h2>状況を教えてください</h2>
             
@@ -761,13 +781,11 @@
             <button class="btn-link" style="width:100%; margin-top:10px;" onclick="app.goToStep(1)">戻る</button>
         </div>
 
-        <!-- Step 3: 結果 -->
         <div id="step3" class="step-content hidden fade-in">
             <h2>コーチからの処方箋</h2>
             
             <div id="resultContainer">
-                <!-- JSで注入 -->
-            </div>
+                </div>
 
             <div class="result-card">
                 <span class="section-header">上達記録（履歴に残す）</span>
@@ -805,13 +823,11 @@
         <button class="btn-link" onclick="app.toggleHistory()">📜 過去の履歴を見る</button>
     </footer>
 
-    <!-- Emergency FAB -->
     <div class="fab-emergency" onclick="app.showModal('emergencyModal')">
         🆘
         <span class="fab-label">お助け</span>
     </div>
 
-    <!-- History Modal -->
     <div id="historyModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="app.closeModal('historyModal')">×</button>
@@ -823,7 +839,6 @@
         </div>
     </div>
 
-    <!-- Emergency Modal -->
     <div id="emergencyModal" class="modal">
         <div class="modal-content" style="background-color: #FFF3E0;">
             <button class="close-modal" onclick="app.closeModal('emergencyModal')">×</button>
@@ -838,7 +853,6 @@
         </div>
     </div>
 
-    <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="app.closeModal('settingsModal')">×</button>
@@ -867,10 +881,15 @@
                 <p class="settings-note">※入力内容は端末内に保存され、共有時の署名などに使用されます。外部には送信されません。</p>
                 <button class="btn-save" onclick="app.saveSettings()">設定を保存する</button>
             </div>
+            
+            <div id="cancelPremiumSection" class="settings-section hidden" style="border-top:1px solid var(--border-color); padding-top:16px;">
+                <span class="settings-label" style="color:#D32F2F;">特別会員の解約</span>
+                <p class="settings-note">パスワードをリセットし、無料版に戻ります。</p>
+                <button class="btn-save" style="background:#fff; color:#D32F2F; border:1px solid #D32F2F;" onclick="app.cancelPremium()">解約する</button>
+            </div>
         </div>
     </div>
 
-    <!-- Help Modal -->
     <div id="helpModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="app.closeModal('helpModal')">×</button>
@@ -910,6 +929,36 @@
         </div>
     </div>
 
+    <div id="premiumModal" class="modal">
+        <div class="modal-content" style="background-color: #FFFDE7; border: 2px solid #FFD700;">
+            <button class="close-modal" onclick="app.closeModal('premiumModal')">×</button>
+            <div class="modal-header" style="color: #F57F17; border-bottom-color: #F57F17;">
+                👑 特別会員のご案内
+            </div>
+            
+            <p style="font-weight:bold; font-size:16px; text-align:center; color:#D32F2F; margin-bottom: 0;" id="premiumModalMessage">
+                無料体験が終了しました。
+            </p>
+            <p style="text-align:center; color:#333; font-size:14px; margin-top:8px;">
+                引き続きご利用いただくには、特別会員（月額）へのご登録が必要です。
+            </p>
+
+            <a href="https://buy.stripe.com/eVqfZg5ey5V3elhg7qcV20H" target="_blank" class="btn-next" style="background: linear-gradient(135deg, #F57F17, #FF6F00); box-shadow: 0 4px 10px rgba(245, 127, 23, 0.4); margin-top: 20px;">
+                お申し込みはこちら（月額500円）
+            </a>
+            <p style="font-size:12px; color:#666; text-align:center; margin-top:8px;">
+                ※お申し込み後、メールにて「パスワード」をお送りします。
+            </p>
+
+            <div class="password-box">
+                <span class="settings-label" style="font-size:14px;">▼ 既にパスワードをお持ちの方</span>
+                <input type="text" id="premiumPassword" class="settings-input" placeholder="メールで届いたパスワードを入力" style="margin-bottom:12px; text-align:center; font-weight:bold; letter-spacing: 2px;">
+                <button class="btn-save" style="margin-top:0; background:#2E7D32;" onclick="app.verifyPassword()">パスワードを認証する</button>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -922,7 +971,9 @@
         { id: 'contact', label: '芯に\n当たらない', icon: '💥' },
         { id: 'distance', label: '飛距離が\n落ちた', icon: '📉' },
         { id: 'start', label: '朝イチの\n不安', icon: '🥶' },
-        { id: 'collapse', label: '後半\n崩れる', icon: '🏚️' }
+        { id: 'collapse', label: '後半\n崩れる', icon: '🏚️' },
+        { id: 'bunker', label: 'バンカーが\n出ない', icon: '🏖️', isPremium: true },
+        { id: 'putt', label: 'パターの\n距離感', icon: '⛳', isPremium: true }
     ];
 
     const ADVICE_DB = {
@@ -1013,6 +1064,28 @@
             ],
             ng: '修正しようといろいろ考えすぎる',
             routine: ['股関節を軽くストレッチ', 'リズムを一定にする', '「フィニッシュ」だけ意識']
+        },
+        'bunker': {
+            title: '砂ごと爆発させる',
+            cause: 'ボールだけを綺麗に打とうとしています。',
+            todos: [
+                'フェースを少し開いて構える',
+                'ボールの手前3cmの砂を狙う',
+                '砂を外に放り出すイメージで振り抜く'
+            ],
+            ng: 'すくい上げようとする',
+            routine: ['足場を砂にしっかり埋める', '重心を低く保つ', 'しっかり最後まで振り切る']
+        },
+        'putt': {
+            title: '振り幅で距離を作る',
+            cause: 'インパクトの強弱で距離を合わせようとしています。',
+            todos: [
+                '足幅を基準に「テークバックとフォロー」を同じにする',
+                'ボールをヒットせず、ストロークの中にボールがある意識',
+                'カップを見ず、ボールの転がりをイメージ'
+            ],
+            ng: 'インパクトで緩む・パンチが入る',
+            routine: ['カップまでの歩測をする', '素振りで距離感の素振り', 'ボールのロゴを狙い線に合わせる']
         }
     };
 
@@ -1025,26 +1098,30 @@
             scene: 'range',
             trend: 'slice',
             history: [],
-            fontSize: 'medium', // medium, large, extra
+            fontSize: 'medium',
             theme: 'light',
             userNick: '',
-            userEmail: ''
+            userEmail: '',
+            isPremium: false,
+            usageCount: 0 // 無料利用回数 (Max: 3)
         },
 
         init: function() {
-            // Load theme
+            // Load Settings
             const savedTheme = localStorage.getItem('golfCoachTheme') || 'light';
             this.toggleTheme(savedTheme === 'dark');
 
-            // Load font size
             const savedFont = localStorage.getItem('golfCoachFontSize') || 'medium';
             this.setFontSize(savedFont);
 
-            // Load User Info
             this.state.userNick = localStorage.getItem('golfCoachNick') || '';
             this.state.userEmail = localStorage.getItem('golfCoachEmail') || '';
             document.getElementById('settingNick').value = this.state.userNick;
             document.getElementById('settingEmail').value = this.state.userEmail;
+
+            // Load Premium Status & Usage Count
+            this.state.isPremium = localStorage.getItem('golfCoachPremium') === 'true';
+            this.state.usageCount = parseInt(localStorage.getItem('golfCoachUsageCount') || '0', 10);
 
             // Load history
             const savedHistory = localStorage.getItem('golfCoachHistory');
@@ -1052,10 +1129,11 @@
                 this.state.history = JSON.parse(savedHistory);
             }
 
-            // Render Step 1
+            // UI Initial Render
+            this.renderTrialBanner();
             this.renderStep1();
             
-            // Input changes listeners
+            // Listeners
             document.querySelectorAll('input[name="club"]').forEach(el => {
                 el.addEventListener('change', (e) => this.state.club = e.target.value);
             });
@@ -1066,7 +1144,6 @@
                 el.addEventListener('change', (e) => this.state.trend = e.target.value);
             });
             
-            // Place select change logic
             document.getElementById('recordPlaceSelect').addEventListener('change', (e) => {
                 const input = document.getElementById('recordPlaceInput');
                 if (e.target.value === 'other') {
@@ -1078,8 +1155,108 @@
             });
         },
 
+        /* Trial Banner Rendering */
+        renderTrialBanner: function() {
+            const banner = document.getElementById('trialBanner');
+            const headerBtn = document.getElementById('headerPremiumBtn');
+            const cancelBtn = document.getElementById('cancelPremiumSection');
+            
+            if (this.state.isPremium) {
+                // 会員状態
+                banner.style.display = 'none';
+                headerBtn.style.display = 'none';
+                cancelBtn.classList.remove('hidden');
+                return;
+            }
+
+            // 非会員状態
+            banner.style.display = 'block';
+            headerBtn.style.display = 'block';
+            cancelBtn.classList.add('hidden');
+
+            const maxUsage = 3;
+            const remaining = maxUsage - this.state.usageCount;
+
+            if (this.state.usageCount === 0) {
+                banner.className = 'trial-banner gold';
+                banner.innerHTML = '🎁 今なら3回まで無料でお試しいただけます（登録不要）';
+            } else if (remaining > 0) {
+                banner.className = 'trial-banner gold';
+                banner.innerHTML = `🎁 無料体験 残り${remaining}回（全3回）`;
+            } else {
+                banner.className = 'trial-banner expired';
+                banner.innerHTML = '⚠️ 無料体験が終了しました。ご購入はこちら→';
+            }
+        },
+
+        /* Password Verification */
+        verifyPassword: async function() {
+            const pw = document.getElementById('premiumPassword').value.trim();
+            
+            // ボタンを「認証中」にして連打を防止
+            const btn = document.querySelector('.password-box .btn-save');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ 認証中...';
+            btn.disabled = true;
+
+            try {
+                // ★作成したCloudflare WorkersのURL
+                const workerUrl = 'https://one-coach.yymmatsu.workers.dev/api/verify-password'; 
+                
+                // Workersにパスワードを送信して判定してもらう
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // 認証成功時
+                    alert('認証に成功しました！\n特別会員としてすべての機能をご利用いただけます。');
+                    this.state.isPremium = true;
+                    localStorage.setItem('golfCoachPremium', 'true');
+                    this.closeModal('premiumModal');
+                    this.renderTrialBanner();
+                    this.renderStep1(); // 鍵マークを消すために再描画
+                } else {
+                    // 認証失敗時
+                    alert('パスワードが間違っています。\n決済後のサンクスメールをご確認ください。');
+                }
+            } catch (error) {
+                // 通信エラー等
+                alert('通信エラーが発生しました。インターネット接続を確認し、もう一度お試しください。');
+            } finally {
+                // ボタンを元に戻す
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        },
+
+        cancelPremium: function() {
+            if(confirm('特別会員を解約しますか？\n（解約後は無料版に戻ります）')) {
+                this.state.isPremium = false;
+                localStorage.removeItem('golfCoachPremium');
+                this.closeModal('settingsModal');
+                this.renderTrialBanner();
+                this.renderStep1();
+                alert('解約手続きが完了しました。');
+            }
+        },
+
         /* UI/Modal Control */
         showModal: function(modalId) {
+            if (modalId === 'premiumModal') {
+                const msg = document.getElementById('premiumModalMessage');
+                if (this.state.usageCount >= 3) {
+                    msg.innerHTML = '⚠️ 無料体験が終了しました。';
+                    msg.style.color = '#D32F2F';
+                } else {
+                    msg.innerHTML = 'もっと上達したい方へ！';
+                    msg.style.color = '#333';
+                }
+            }
             document.getElementById(modalId).classList.add('open');
         },
         closeModal: function(modalId) {
@@ -1099,8 +1276,6 @@
             this.state.fontSize = size;
             document.body.setAttribute('data-fontsize', size);
             localStorage.setItem('golfCoachFontSize', size);
-            
-            // Update active button visual in settings
             document.querySelectorAll('.size-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.setsize === size);
             });
@@ -1109,13 +1284,10 @@
         saveSettings: function() {
             const nick = document.getElementById('settingNick').value;
             const email = document.getElementById('settingEmail').value;
-            
             this.state.userNick = nick;
             this.state.userEmail = email;
-            
             localStorage.setItem('golfCoachNick', nick);
             localStorage.setItem('golfCoachEmail', email);
-            
             alert('設定を保存しました！');
             this.closeModal('settingsModal');
         },
@@ -1127,11 +1299,33 @@
             PROBLEMS.forEach(p => {
                 const btn = document.createElement('div');
                 btn.className = 'btn-card';
+                
+                // 特別会員向けかつ未課金の場合は鍵アイコンを表示
+                let lockHtml = '';
+                if (p.isPremium && !this.state.isPremium) {
+                    lockHtml = '<div class="lock-icon">🔒</div>';
+                    btn.style.opacity = '0.75';
+                    btn.style.background = 'var(--bg-color)';
+                }
+
                 btn.innerHTML = `
+                    ${lockHtml}
                     <span class="btn-icon">${p.icon}</span>
                     <span class="btn-label">${p.label.replace(/\n/g, '<br>')}</span>
                 `;
                 btn.onclick = () => {
+                    // 鍵付き機能をタップした場合
+                    if (p.isPremium && !this.state.isPremium) {
+                        this.showModal('premiumModal');
+                        return;
+                    }
+                    
+                    // 利用回数チェック
+                    if (!this.state.isPremium && this.state.usageCount >= 3) {
+                        this.showModal('premiumModal');
+                        return;
+                    }
+
                     document.querySelectorAll('.btn-card').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
                     this.state.problem = p.id;
@@ -1142,45 +1336,40 @@
         },
 
         goToStep: function(stepNum) {
-            // Validation
             if (stepNum === 2 && !this.state.problem) return;
             
-            // Update State
             this.state.step = stepNum;
 
-            // UI Update
             document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`step${stepNum}`).classList.remove('hidden');
 
-            // Progress Bar
             document.querySelectorAll('.step-indicator').forEach((el, idx) => {
                 el.classList.remove('active', 'completed');
                 if (idx + 1 < stepNum) el.classList.add('completed');
                 if (idx + 1 === stepNum) el.classList.add('active');
             });
 
-            // Scroll to top
             window.scrollTo(0, 0);
 
-            // If Step 3, Generate Result
             if (stepNum === 3) {
                 this.generateResult();
             }
         },
 
         generateResult: function() {
+            // 無料利用のカウントアップ
+            if (!this.state.isPremium) {
+                this.state.usageCount++;
+                localStorage.setItem('golfCoachUsageCount', this.state.usageCount);
+                this.renderTrialBanner(); // バナー表示更新
+            }
+
             const problemId = this.state.problem;
             const baseData = ADVICE_DB[problemId];
-            const context = {
-                club: this.state.club,
-                scene: this.state.scene,
-                trend: this.state.trend
-            };
+            const context = { club: this.state.club, scene: this.state.scene, trend: this.state.trend };
 
-            // Copy base data
             let advice = JSON.parse(JSON.stringify(baseData));
 
-            // --- Context Logic ---
             if (context.club === 'driver') {
                 advice.todos.push('ティーアップの高さを確認');
                 if (problemId === 'slice') advice.ng = '思い切り叩きにいく';
@@ -1201,16 +1390,11 @@
                 advice.cause += ' スライス回転でロスしています。';
             }
 
-            // Render HTML
             const container = document.getElementById('resultContainer');
             container.innerHTML = `
                 <div class="result-card">
                     <div class="prescription-title">${advice.title}</div>
-                    
-                    <div class="cause-section">
-                        <strong>今の状態：</strong><br>${advice.cause}
-                    </div>
-
+                    <div class="cause-section"><strong>今の状態：</strong><br>${advice.cause}</div>
                     <div class="section-header">今すぐやること3つ</div>
                     <ul class="todo-list">
                         ${advice.todos.slice(0,3).map(t => `
@@ -1220,10 +1404,8 @@
                             </li>
                         `).join('')}
                     </ul>
-
                     <div class="section-header">やってはいけない (NG)</div>
                     <div class="ng-box">⚠️ ${advice.ng}</div>
-
                     <div class="section-header">3球ルーティン</div>
                     <div class="routine-list">
                         ${advice.routine.map((r, i) => `
@@ -1235,7 +1417,6 @@
                 </div>
             `;
 
-            // Reset inputs for recording
             document.getElementById('userMemo').value = '';
             document.getElementById('recordPlaceSelect').value = '練習場';
             document.getElementById('recordPlaceInput').classList.add('hidden');
@@ -1254,13 +1435,8 @@
         saveResult: function() {
             const memo = document.getElementById('userMemo').value;
             const dateVal = document.getElementById('recordDate').value;
-            
-            // Handle Place
             const selectVal = document.getElementById('recordPlaceSelect').value;
-            let placeVal = selectVal;
-            if (selectVal === 'other') {
-                placeVal = document.getElementById('recordPlaceInput').value || '場所未入力';
-            }
+            let placeVal = selectVal === 'other' ? document.getElementById('recordPlaceInput').value || '場所未入力' : selectVal;
 
             const historyItem = {
                 ...this.currentResult,
@@ -1271,7 +1447,7 @@
             };
 
             this.state.history.unshift(historyItem);
-            if (this.state.history.length > 20) this.state.history.pop(); // Max 20
+            if (this.state.history.length > 20) this.state.history.pop(); 
 
             localStorage.setItem('golfCoachHistory', JSON.stringify(this.state.history));
             alert('履歴に保存しました！');
@@ -1284,11 +1460,7 @@
             const memo = document.getElementById('userMemo').value;
             let text = `【1分ゴルフコーチ】\n処方箋：${r.title}\n\nやるべきこと：\n${r.todos.map(t=>'・'+t).join('\n')}`;
             if(memo) text += `\n\nメモ：\n${memo}`;
-            
-            // Add user signature if available
-            if(this.state.userNick) {
-                text += `\n\nFrom: ${this.state.userNick}さんの共有`;
-            }
+            if(this.state.userNick) text += `\n\nFrom: ${this.state.userNick}さんの共有`;
 
             const url = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
             window.open(url, '_blank');
@@ -1322,7 +1494,7 @@
             if(confirm('本当に履歴を全て削除しますか？')) {
                 this.state.history = [];
                 localStorage.removeItem('golfCoachHistory');
-                this.toggleHistory(); // Re-render
+                this.toggleHistory(); 
             }
         },
         
